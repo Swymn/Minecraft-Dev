@@ -1,6 +1,5 @@
 package fr.swynn.handler;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,12 +7,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import fr.swynn.manager.DirectoryManager;
+import fr.swynn.manager.FileManager;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 
 public class MavenHandler {
-    
+
     public MavenHandler(String version, String name, String groupId) {
         Model model = this.setupPomXML(groupId, name, version);
         MavenXpp3Writer writer = new MavenXpp3Writer();
@@ -28,7 +29,7 @@ public class MavenHandler {
     }
 
     /**
-     * This method is used to setup the pom.xml file
+     * This method is used to set up the pom.xml file
      * 
      * @param groupId The groupId of the project - String
      * @param name The name of the project - String
@@ -47,6 +48,7 @@ public class MavenHandler {
         properties.setProperty("maven.compiler.target", "17");
         model.setProperties(properties);
 
+        // TODO: The version of spigot doesn't work.
         Dependency dependency = new Dependency();
         dependency.setGroupId("org.spigotmc");
         dependency.setArtifactId("spigot-api");
@@ -55,29 +57,6 @@ public class MavenHandler {
         model.addDependency(dependency);
 
         return model;
-    }
-
-    /**
-     * This method is used to write a file
-     * 
-     * @param path The path of the file - String
-     * @param filename The name of the file - String
-     * @param filecontent The content of the file - String
-     * @return void
-     */
-    private void writeFile(Path path, String filename, String filecontent) {
-        if (Files.exists(path.resolve(filename))) return;
-
-        try {
-            File file = new File(Files.createFile(path.resolve(filename)).toString());
-            FileWriter writer = new FileWriter(file);
-
-            writer.write(filecontent);
-
-            writer.close();
-        } catch(IOException e) {
-            System.out.println("Error while creating the file " + filename);
-        }
     }
 
     /**
@@ -91,20 +70,18 @@ public class MavenHandler {
         Path[] folders = {
             Paths.get(name, "src", "main", "java"),
             Paths.get(name, "src", "main", "resources"),
-            Paths.get(name, "src", "test", "java")
         };
 
         for (String path : pack) {
             folders[0] = folders[0].resolve(path);
         }
 
-        try {
-            for (Path path : folders) {
-                if (!Files.exists(path))
-                    Files.createDirectories(path);
+        for (Path path : folders) {
+            try {
+                new DirectoryManager(Paths.get("./").resolve(path));
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (IOException e) {
-            System.out.println("Error while creating the directories");
         }
 
         return folders;
@@ -115,11 +92,10 @@ public class MavenHandler {
      * 
      * @param groupId The groupId of the project - String
      * @param name The name of the project - String
-     * @return void
      */
     private void createArchitectures(String groupId, String name) {
         
-        Path folders[] = this.createDirectories(groupId, name);
+        Path[] folders = this.createDirectories(groupId, name);
 
         // Write the main class
         String mainJava = 
@@ -148,7 +124,14 @@ public class MavenHandler {
             "main: \"" + groupId + ".Main\""
         ;
 
-        this.writeFile(folders[0], "Main.java", mainJava);
-        this.writeFile(folders[1], "plugin.yml", yaml);
+        try {
+            FileManager file = new FileManager("Main.java", folders[0]);
+            file.write(mainJava);
+
+            file = new FileManager("plugin.yml", folders[1]);
+            file.write(yaml);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

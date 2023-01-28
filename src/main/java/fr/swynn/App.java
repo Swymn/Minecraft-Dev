@@ -1,18 +1,31 @@
 package fr.swynn;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 import fr.swynn.handler.MavenHandler;
+import fr.swynn.handler.ServerHandler;
 import fr.swynn.handler.SpigotHandler;
+import fr.swynn.manager.DirectoryManager;
 
 enum Type {
     PLUGIN,
-    SERVER;
+    SERVER
 }
 
 public class App {
 
+    private static Scanner scanner;
+    private static final ArrayList<String> posAnswer = new ArrayList<>() {
+        {
+            add("y");
+            add("yes");
+            add("oui");
+            add("o");
+            add("true");
+        }
+    };
     private static final String[] names = {
         "Super Tools",
         "Ender Expansions",
@@ -67,42 +80,35 @@ public class App {
         }
 
         SpigotHandler.createJSONIfNotExists();
+        scanner = new Scanner(System.in);
 
         Type type = getType(args[1]);
         String version = args[0];
         String name = args.length > 2 ? args[2] : names[new Random().nextInt(names.length)];
 
+        if (DirectoryManager.exists(name)) {
+            System.out.println("The project '" + name + "' already exists.");
+            System.exit(-1);
+        }
+
         System.out.println("[Version]: \t" + version);
         System.out.println("[Type]: \t" + type);
         System.out.println("[Name]: \t" + name);
 
-        switch(type) {
-            case PLUGIN:
-                System.out.println("Enter the groupId of your plugin (ex: fr.swynn):");
-                Scanner scanner = new Scanner(System.in);
-                String groupId = "";
-                while (scanner.hasNextLine()) {
-                    String line = scanner.nextLine();
-                    if (line.isEmpty() || line.isBlank()) {
-                        System.out.println("groupId cannot be empty");
-                        continue;
-                    }
-
-                    groupId = line;
-                    break;
-                }
-
-                scanner.close();
-
+        switch (type) {
+            case PLUGIN -> {
+                String groupId = ask("Enter the groupId of your plugin (ex: fr.swynn):");
                 new MavenHandler(version, name, groupId);
-                break;
-            
-            default:
-                System.out.println("Type not implemented yet");
-                break;
+                String wantServer = ask("Do you want to download the server too? (y/n)");
+                if (!(posAnswer.contains(wantServer.toLowerCase()))) return;
+                ServerHandler server = new ServerHandler(name, version);
+                server.create();
+            }
+            case SERVER -> System.out.println("Type not implemented yet.");
+            default -> System.out.println("Type not found.");
         }
         
-
+        scanner.close();
         // new SpigotHandler(version);
     }
 
@@ -114,5 +120,29 @@ public class App {
             System.exit(-1);
             return null;
         }
+    }
+
+    public static String ask(String question) {
+        return ask(question, false);
+    }
+
+    public static String ask(String question, boolean canBeEmpty) {
+        System.out.print(question + "\n-> ");
+        String input = "";
+        
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (!(canBeEmpty)) {
+                if (line.isEmpty() || line.isBlank()) {
+                    System.out.print("->");
+                    continue;
+                }
+            }
+
+            input = line;
+            break;
+        }
+
+        return input.equals("") ? null : input;
     }
 }

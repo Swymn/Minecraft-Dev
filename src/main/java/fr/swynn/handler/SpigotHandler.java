@@ -14,9 +14,9 @@ import fr.swynn.utils.Command;
 
 public class SpigotHandler {
 
-    private final String url = "https://cdn.getbukkit.org/spigot/spigot-";
-    private final File file = new File("data/versions.json");
-    private static HashMap<String, String> oldVersions = new HashMap<String, String>() {
+    private final String URL = "cdn.getbukkit.org/spigot/";
+    private static final File FILE = new File("data/versions.json");
+    private static final HashMap<String, String> OLD_VERSIONS = new HashMap<>() {
         {
             put("1.4.6", "1.4.6-R0.4-SNAPSHOT.jar");
             put("1.4.7", "1.4.7-R1.1-SNAPSHOT.jar");
@@ -45,16 +45,43 @@ public class SpigotHandler {
     };
 
     /**
+     * Download a Spigot version
+     *
+     * @param version The version to download - String
+     * @param path    The path to storage the server - String
+     */
+    public SpigotHandler(String version, String path) {
+        // TODO: The Spigot file isn't working.
+        String name = "spigot-" + version + ".jar";
+        String url = this.URL + name;
+        String oldVersion = getOldVersion(version);
+
+        if (oldVersion != null) {
+            name = oldVersion;
+            url = this.URL + oldVersion;
+        }
+
+        System.out.println(url);
+
+        Command install = new Command("wget " + url);
+        Command mv = new Command("mv " + name + " " + path);
+
+        String PREFIX = "[INFO] : ";
+        System.out.println(PREFIX + "Téléchargement de Spigot " + version + (install.isSuccessful() ? " réussi" : " échoué"));
+        System.out.println(PREFIX + "Configuration du server Spigot" + (mv.isSuccessful() ? " réussi" : " échoué"));
+    }
+
+    /**
      * Create a JSON file with all old versions
      */
     private static void createJSON() {
-        
-        Version[] versions = new Version[oldVersions.size()];
-        for (int i = 0; i < oldVersions.size(); i++) {
-            String version = (String) oldVersions.keySet().toArray()[i];
-            versions[i] = (new Version(version, oldVersions.get(version)));
+
+        Version[] versions = new Version[OLD_VERSIONS.size()];
+        for (int i = 0; i < OLD_VERSIONS.size(); i++) {
+            String version = (String) OLD_VERSIONS.keySet().toArray()[i];
+            versions[i] = (new Version(version, OLD_VERSIONS.get(version)));
         }
-        
+
         try {
             FileWriter writer = new FileWriter("data/versions.json");
 
@@ -85,14 +112,14 @@ public class SpigotHandler {
 
     /**
      * Get the old version of a Spigot version
-     * 
+     *
      * @param version The version to get - String
      * @return The old version - String
      */
-    private static String getOldVersion(String version, File file) {
-        if (file.exists()) {
+    public static String getOldVersion(String version) {
+        if (FILE.exists()) {
             try {
-                FileReader reader = new FileReader(file);
+                FileReader reader = new FileReader(FILE);
                 Version[] versions = new Gson().fromJson(reader, Version[].class);
                 for (Version v : versions) {
                     if (v.version.equals(version)) {
@@ -107,28 +134,6 @@ public class SpigotHandler {
         }
         return null;
     }
-
-    /**
-     * Download a Spigot version
-     * 
-     * @param version The version to download - String
-     */
-    public SpigotHandler(String version) {
-        String url = this.url + version + ".jar";
-        String oldVersion = getOldVersion(version, file);
-        if (oldVersion != null) {
-            url = this.url + oldVersion;
-        }
-        
-        Command command = new Command("wget " + url);
-
-        if (command.isSuccessful()) {
-            System.out.println("Téléchargement de Spigot " + version + " réussi");
-        } else {
-            System.out.println("Téléchargement de Spigot " + version + " échoué");
-        }
-    }
-
 
     private static class Version {
         private String version;
