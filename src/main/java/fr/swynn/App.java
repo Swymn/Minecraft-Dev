@@ -74,7 +74,7 @@ public class App {
     };
 
     public static void main(String[] args) {
-        if (args.length < 3) {
+        if (args.length < 2) {
             System.out.println("Usage: java -jar SpigotDownloader.jar <version> <plugin/server> <name(optional)>");
             System.exit(-1);
         }
@@ -97,8 +97,9 @@ public class App {
 
         switch (type) {
             case PLUGIN -> {
-                String groupId = ask("Enter the groupId of your plugin (ex: fr.swynn):");
+                String groupId = ask("Enter the groupId of your plugin (ex: com.example):");
                 new MavenHandler(version, name, groupId);
+
                 String wantServer = ask("Do you want to download the server too? (y/n)");
                 if (!(posAnswer.contains(wantServer.toLowerCase()))) return;
                 ServerHandler server = new ServerHandler(name, version);
@@ -109,7 +110,6 @@ public class App {
         }
         
         scanner.close();
-        // new SpigotHandler(version);
     }
 
     public static Type getType(String type) {

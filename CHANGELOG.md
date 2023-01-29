@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
+- The way to download spigot
 - MavenHandler class now uses the FileManager class to create the files.
 - MavenHandler class now uses the DirectoryManager class to create the directories.
 

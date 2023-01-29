@@ -82,8 +82,7 @@ public class ServerHandler {
      */
     private void createStartScript() {
         String shellLine = "#!/bin/sh";
-        String oldVersion = SpigotHandler.getOldVersion(version);
-        String javaFile = oldVersion == null ? "spigot-" + version + ".jar" : "spigot-" + oldVersion + ".jar";
+        String javaFile = SpigotHandler.getName(version);
 
         String startScriptContent =
                 shellLine + "\n" +

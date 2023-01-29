@@ -8,7 +8,7 @@ enum Status {
     ERROR(-1),
     INTERRUPTED(-2);
 
-    private Status(int value) {}
+    Status(int value) {}
 }
 
 public class Command {
@@ -28,8 +28,10 @@ public class Command {
             this.status = process.exitValue() == 0 ? Status.SUCCESS : Status.ERROR;
             this.result = process.getInputStream();
         } catch (IOException e) {
+            System.out.println("Error while executing the command: " + command);
             this.status = Status.ERROR;
         } catch (InterruptedException e) {
+            System.out.println("The command was interrupted: " + command);
             this.status = Status.INTERRUPTED;
         }
     }
