@@ -101,7 +101,7 @@ public class App {
                     MinecraftServerCreator server = new MinecraftServerCreator(Paths.get(name).resolve("server").toString(), version);
                     server.create();
 
-                    Logger.log(State.INFO, "Server created in " + server.getPath() + " folder.");
+                    Logger.log(State.SUCCESS, "Server created in " + server.getPath() + " folder.");
                     Logger.log(State.INFO, "You can now go to the server folder using the commande 'cd " + server.getPath() + "', or juste by using your file explorer tool.");
                     Logger.log(State.INFO, "Don't forget to use the good version of Java, to run your server.");
                     Logger.log(State.INFO, "You can now launch your server by typing the commande 'sh start.sh' (for Linux & MacOS users)\n or 'start.bat' (for Windows users).");
@@ -112,7 +112,7 @@ public class App {
                 Logger.log(State.INFO, "Don't forget to use the good version of Java, by default, the project is configured to use Java 17. \n(you can change it in the pom.xml file, in the properties section, change both maven.compiler.source and maven.compiler.target with the version you want).");
                 Logger.log(State.INFO, "If there is a problem with the specified version of spigot inside the pom.xml file, you can change it by changing the version in the dependency section \n(see https://hub.spigotmc.org/nexus/content/repositories/snapshots/org/spigotmc/spigot-api/ to see all the spigot versions available).");
                 Logger.log(State.INFO, "You can now run 'mvn clean install' to build your plugin and the server. \n(you need to have maven installed on your computer.");
-                Logger.log(State.INFO, "You can also run 'mvn clean install -DskipTests' to build your plugin and the server without running the tests. \n(you need to have maven installed on your computer.");
+                Logger.log(State.INFO, "You can also run 'mvn clean install -DskipTests' to build your plugin and the server without running the tests. \n(you need to have maven installed on your computer).");
             }
             case SERVER -> {
                 MinecraftServerCreator server = new MinecraftServerCreator(name, version);

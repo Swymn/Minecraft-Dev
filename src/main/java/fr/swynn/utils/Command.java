@@ -2,6 +2,8 @@ package fr.swynn.utils;
 
 import java.io.IOException;
 
+import fr.swynn.App;
+
 enum Status {
     SUCCESS(0),
     ERROR(-1),
@@ -21,10 +23,11 @@ public class Command {
      */
     public Command(String command) {
         try {
-            Process process = Runtime.getRuntime().exec(command);
+            Process process = Runtime.getRuntime().exec((App.isWindowsOS() ? "cmd /c " : "") + command);
             process.waitFor();
             this.status = process.exitValue() == 0 ? Status.SUCCESS : Status.ERROR;
         } catch (IOException e) {
+            e.printStackTrace();
             Logger.log(State.ERROR,"Error while executing the command: " + command);
             this.status = Status.ERROR;
         } catch (InterruptedException e) {
