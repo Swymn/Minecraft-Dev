@@ -103,13 +103,12 @@ public class SpigotDownloader {
         this.version = version;
         String url = getURL(version);
 
-        Logger.log(State.INFO, "Téléchargement du server Spigot " + version + "...");
+        Logger.log(State.INFO, "Download of the Spigot server " + version + "...");
         download(url);
-        Logger.log(State.SUCCESS, "Téléchargement du server Spigot " + version + " réussi");
+        Logger.log(State.SUCCESS, "Download of the Spigot server " + version + " successful.");
 
-        Logger.log(State.DEBUG, "mv " + getBukkitName(version) + " " + path);
         Command mv = new Command("mv " + getBukkitName(version) + " " + path);
-        Logger.log((mv.isSuccessful() ? State.SUCCESS : State.ERROR), "Configuration du server Spigot" + (mv.isSuccessful() ? " réussi" : " échoué"));
+        Logger.log((mv.isSuccessful() ? State.SUCCESS : State.ERROR), "Configuration of the Spigot server " + (mv.isSuccessful() ? "successful" : "failed") + ".");
     }
 
     /**

@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
+- Edit the name of the projet (lowercase, and without spaces).
 - Rename SpigotHandler into SpigotDownloader
 - Rename ServerHandler into MinecraftServerCreator
 - Rename MavenHandler into MavenProjectCreator
@@ -19,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
+- The possibility to generate only the minecraft server files.
 - State and color enum, to handle the prefix and the color of the logs.
 - Logger class to handle all the logs, and inputs.
 - FileManager class to handle the creation of the files.
@@ -26,7 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - The possibility to generate a server folder with the needed files (EULA.txt, start script) to run a Spigot server in the version of your choice.
 - Changelog file.
 
-## [0.1] - 2022-01-09
+## [0.1] - 2023-01-09
 
 ### Added
 

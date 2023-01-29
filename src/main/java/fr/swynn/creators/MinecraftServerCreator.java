@@ -29,6 +29,13 @@ public class MinecraftServerCreator {
     }
 
     /**
+     * This methode is used to get the path of the server
+     */
+    public Path getPath() {
+        return path;
+    }
+
+    /**
      * This method create the server folder, download the spigot version and create the EULA.txt file
      */
     public void create() {
@@ -85,7 +92,9 @@ public class MinecraftServerCreator {
                 shellLine + "\n" +
                 "java -Xms1G -Xmx2G -jar " + javaFile + "\n"
         ;
-        FileCreator startScript = new FileCreator("start.sh", Paths.get("./").resolve(path));
+
+        String fileName = System.getProperty("os.name").toLowerCase().contains("windows") ? "start.bat" : "start.sh";
+        FileCreator startScript = new FileCreator(fileName, Paths.get("./").resolve(path));
         startScript.write(startScriptContent);
     }
 }

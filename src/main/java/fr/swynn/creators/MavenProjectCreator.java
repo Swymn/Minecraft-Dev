@@ -9,14 +9,14 @@ import java.util.Properties;
 
 import fr.swynn.utils.Logger;
 import fr.swynn.utils.State;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Model;
+import org.apache.maven.model.*;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 public class MavenProjectCreator {
 
-    public MavenProjectCreator(String version, String name, String groupId) {
-        Model model = this.setupPomXML(groupId, name, version);
+    public MavenProjectCreator(String version, String name, String groupId, boolean isServerLinked) {
+        Model model = this.setupPomXML(groupId, name, version, isServerLinked);
         MavenXpp3Writer writer = new MavenXpp3Writer();
 
         try {
@@ -36,7 +36,7 @@ public class MavenProjectCreator {
      * @param version The version of the Spigot - String
      * @return The model of the pom.xml
      */
-    private Model setupPomXML(String groupId, String name, String version) {
+    private Model setupPomXML(String groupId, String name, String version, boolean isServerLinked) {
         Model model = new Model();
         model.setModelVersion("4.0.0");
         model.setGroupId(groupId);
@@ -55,6 +55,51 @@ public class MavenProjectCreator {
         dependency.setVersion(version + "-R0.1-SNAPSHOT");
         dependency.setScope("provided");
         model.addDependency(dependency);
+
+        if (isServerLinked) {
+            Build build = new Build();
+            build.setFinalName(name);
+
+            Plugin assemblyPlugin = new Plugin();
+            assemblyPlugin.setGroupId("org.apache.maven.plugins");
+            assemblyPlugin.setArtifactId("maven-assembly-plugin");
+            assemblyPlugin.setVersion("3.3.0");
+
+            Xpp3Dom config = new Xpp3Dom("configuration");
+            Xpp3Dom descriptorRefs = new Xpp3Dom("descriptorRefs");
+            Xpp3Dom descriptorRef = new Xpp3Dom("descriptorRef");
+
+            descriptorRef.setValue("jar-with-dependencies");
+            descriptorRefs.addChild(descriptorRef);
+            config.addChild(descriptorRefs);
+
+            Xpp3Dom outputDirectory = new Xpp3Dom("outputDirectory");
+            outputDirectory.setValue("./server/plugins/");
+            config.addChild(outputDirectory);
+
+            Xpp3Dom archive = new Xpp3Dom("archive");
+            Xpp3Dom manifest = new Xpp3Dom("manifest");
+            Xpp3Dom addClasspath = new Xpp3Dom("addClasspath");
+            Xpp3Dom mainClass = new Xpp3Dom("mainClass");
+            addClasspath.setValue("true");
+            mainClass.setValue(groupId + ".Main");
+            manifest.addChild(addClasspath);
+            manifest.addChild(mainClass);
+            archive.addChild(manifest);
+            config.addChild(archive);
+
+            assemblyPlugin.setConfiguration(config);
+
+            PluginExecution execution = new PluginExecution();
+            execution.setId("make-assembly");
+            execution.setPhase("package");
+            execution.addGoal("single");
+
+            assemblyPlugin.addExecution(execution);
+
+            build.addPlugin(assemblyPlugin);
+            model.setBuild(build);
+        }
 
         return model;
     }

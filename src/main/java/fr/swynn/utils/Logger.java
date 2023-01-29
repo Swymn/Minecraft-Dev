@@ -43,4 +43,8 @@ public class Logger {
 
         return input.equals("") ? null : input;
     }
+
+    public static boolean isPositiveAnswer(String answer) {
+        return POS_ANSWER.contains(answer.toLowerCase());
+    }
 }
