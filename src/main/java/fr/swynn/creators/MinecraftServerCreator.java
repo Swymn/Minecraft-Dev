@@ -16,7 +16,7 @@ public class MinecraftServerCreator {
     private final Path path;
 
     public MinecraftServerCreator(String name, String version) {
-        this(name, version, "server");
+        this(name, version, (String) null);
     }
 
     public MinecraftServerCreator(String name, String version, String path) {

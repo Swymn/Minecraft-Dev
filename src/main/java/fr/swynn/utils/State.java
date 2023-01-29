@@ -1,9 +1,10 @@
 package fr.swynn.utils;
 
 public enum State {
-    INFO(Color.BLUE, "INFO"),
+    INFO(Color.CYAN, "INFO"),
     WARNING(Color.YELLOW, "WARNING"),
     ERROR(Color.RED, "ERROR"),
+    DEBUG(Color.BLUE, "DEBUG"),
     SUCCESS(Color.GREEN, "SUCCESS");
 
     private final Color color;
@@ -23,7 +24,8 @@ public enum State {
     }
 
     public enum Color {
-        BLUE("36"),
+        CYAN("36"),
+        BLUE("34"),
         YELLOW("33"),
         RED("31"),
         GREEN("32"),

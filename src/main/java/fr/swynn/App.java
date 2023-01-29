@@ -1,5 +1,6 @@
 package fr.swynn;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -9,6 +10,7 @@ import fr.swynn.creators.MinecraftServerCreator;
 import fr.swynn.utils.Logger;
 import fr.swynn.utils.SpigotDownloader;
 import fr.swynn.creators.DirectoryCreator;
+import fr.swynn.utils.State;
 
 enum Type {
     PLUGIN,
@@ -67,7 +69,7 @@ public class App {
 
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("Usage: java -jar SpigotDownloader.jar <version> <plugin/server> <name(optional)>");
+            Logger.log(State.WARNING,"Usage: java -jar minecraft_dev.jar <version> <type> [name]");
             System.exit(-1);
         }
 
@@ -78,8 +80,10 @@ public class App {
         String version = args[0];
         String name = args.length > 2 ? args[2] : names[new Random().nextInt(names.length)];
 
+        name = name.replace(" ", "-").toLowerCase();
+
         if (DirectoryCreator.exists(name)) {
-            System.out.println("The project '" + name + "' already exists.");
+            Logger.log(State.ERROR,"The project '" + name + "' already exists.");
             System.exit(-1);
         }
 
@@ -94,11 +98,14 @@ public class App {
 
                 String wantServer = Logger.input("Do you want to download the server too? (y/n)");
                 if (!(Logger.POS_ANSWER.contains(wantServer.toLowerCase()))) return;
+                MinecraftServerCreator server = new MinecraftServerCreator(Paths.get(name).resolve("server").toString(), version);
+                server.create();
+            }
+            case SERVER -> {
                 MinecraftServerCreator server = new MinecraftServerCreator(name, version);
                 server.create();
             }
-            case SERVER -> System.out.println("Type not implemented yet.");
-            default -> System.out.println("Type not found.");
+            default -> Logger.log(State.ERROR, "Type must be 'plugin' or 'server', not '" + type + "'");
         }
         
         scanner.close();
