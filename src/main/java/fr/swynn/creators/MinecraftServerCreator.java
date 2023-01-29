@@ -1,6 +1,8 @@
 package fr.swynn.creators;
 
+import fr.swynn.utils.Logger;
 import fr.swynn.utils.SpigotDownloader;
+import fr.swynn.utils.State;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,7 +46,7 @@ public class MinecraftServerCreator {
         try {
             Files.createDirectory(path);
         } catch (Exception e) {
-            System.out.println("Error while creating the server folder");
+            Logger.log(State.ERROR,"Error while creating the server folder");
         }
     }
 

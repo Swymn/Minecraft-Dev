@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import fr.swynn.utils.Logger;
+import fr.swynn.utils.State;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
@@ -22,7 +24,7 @@ public class MavenProjectCreator {
             writer.write(new FileWriter(name + "/pom.xml"), model);
             this.createArchitectures(groupId, name);
         } catch (IOException e) {
-            System.out.println("Error while creating the pom.xml file");
+            Logger.log(State.ERROR,"Error while creating the pom.xml file");
         }
     }
 
@@ -78,7 +80,7 @@ public class MavenProjectCreator {
             try {
                 DirectoryCreator.create(Paths.get("./").resolve(path));
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                Logger.log(State.ERROR, e.getMessage());
             }
         }
 
@@ -129,7 +131,7 @@ public class MavenProjectCreator {
             file = new FileCreator("plugin.yml", folders[1]);
             file.write(yaml);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            Logger.log(State.ERROR, e.getMessage());
         }
     }
 }

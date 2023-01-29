@@ -8,17 +8,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- SpigotHandler -> SpigotDownloader
-- ServerHandler -> MinecraftServerCreator
-- MavenHandler -> MavenProjectCreator
-- FileManager -> FileCreator.
-- DirectoryManager -> DirectoryCreator.
+- Rename SpigotHandler into SpigotDownloader
+- Rename ServerHandler into MinecraftServerCreator
+- Rename MavenHandler into MavenProjectCreator
+- Rename FileManager into FileCreator.
+- Rename DirectoryManager into DirectoryCreator.
 - The way to download spigot.
 - MavenHandler class now uses the FileManager class to create the files.
 - MavenHandler class now uses the DirectoryManager class to create the directories.
 
 ### Added
 
+- State and color enum, to handle the prefix and the color of the logs.
+- Logger class to handle all the logs, and inputs.
 - FileManager class to handle the creation of the files.
 - DirectoryManager class to handle the creation of the directories.
 - The possibility to generate a server folder with the needed files (EULA.txt, start script) to run a Spigot server in the version of your choice.

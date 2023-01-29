@@ -102,14 +102,13 @@ public class SpigotDownloader {
     public SpigotDownloader(String version, Path path) {
         this.version = version;
         String url = getURL(version);
-        String PREFIX = "[INFO] : ";
 
-        System.out.println(PREFIX + "Téléchargement du server Spigot " + version + "...");
+        Logger.log(State.INFO, "Téléchargement du server Spigot " + version + "...");
         download(url);
-        System.out.println(PREFIX + "Téléchargement du server Spigot " + version + " réussi");
+        Logger.log(State.SUCCESS, "Téléchargement du server Spigot " + version + " réussi");
 
         Command mv = new Command("mv " + getBukkitName(version) + " " + path + "/" + getName(version));
-        System.out.println(PREFIX + "Configuration du server Spigot" + (mv.isSuccessful() ? " réussi" : " échoué"));
+        Logger.log((mv.isSuccessful() ? State.SUCCESS : State.ERROR), "Configuration du server Spigot" + (mv.isSuccessful() ? " réussi" : " échoué"));
     }
 
     /**
@@ -128,10 +127,10 @@ public class SpigotDownloader {
                 fos.write(buffer, 0, bytesRead);
             }
         } catch (MalformedURLException e) {
-            System.out.println("Error while downloading the spigot server, the URL is malformed.");
+            Logger.log(State.ERROR,"Error while downloading the spigot server, the URL is malformed.");
             System.exit(-2);
         } catch (IOException e) {
-            System.out.println("Error while downloading the spigot server, this version may not exist.");
+            Logger.log(State.ERROR,"Error while downloading the spigot server, this version may not exist.");
             System.exit(-2);
         }
     }
@@ -184,7 +183,7 @@ public class SpigotDownloader {
 
             writer.close();
         } catch (Exception e) {
-            System.out.println("Impossible de créer le fichier versions.json");
+            Logger.log(State.ERROR,"Error while creating the versions.json file.");
         }
     }
 
@@ -197,7 +196,7 @@ public class SpigotDownloader {
             try {
                 Files.createDirectory(path);
             } catch (Exception e) {
-                System.out.println("Impossible de créer le dossier data");
+                Logger.log(State.ERROR,"Error while creating the data directory.");
             }
         }
         if (!Files.exists(Paths.get("data/versions.json"))) {

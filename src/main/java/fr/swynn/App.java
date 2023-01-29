@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import fr.swynn.creators.MavenProjectCreator;
 import fr.swynn.creators.MinecraftServerCreator;
+import fr.swynn.utils.Logger;
 import fr.swynn.utils.SpigotDownloader;
 import fr.swynn.creators.DirectoryCreator;
 
@@ -16,16 +17,6 @@ enum Type {
 
 public class App {
 
-    private static Scanner scanner;
-    private static final ArrayList<String> posAnswer = new ArrayList<>() {
-        {
-            add("y");
-            add("yes");
-            add("oui");
-            add("o");
-            add("true");
-        }
-    };
     private static final String[] names = {
         "Super Tools",
         "Ender Expansions",
@@ -72,6 +63,7 @@ public class App {
         "Mob Enchantment",
         "The Mob Boss Mod",
     };
+    public static Scanner scanner;
 
     public static void main(String[] args) {
         if (args.length < 2) {
@@ -97,11 +89,11 @@ public class App {
 
         switch (type) {
             case PLUGIN -> {
-                String groupId = ask("Enter the groupId of your plugin (ex: com.example):");
+                String groupId = Logger.input("Enter the groupId of your plugin (ex: com.example):");
                 new MavenProjectCreator(version, name, groupId);
 
-                String wantServer = ask("Do you want to download the server too? (y/n)");
-                if (!(posAnswer.contains(wantServer.toLowerCase()))) return;
+                String wantServer = Logger.input("Do you want to download the server too? (y/n)");
+                if (!(Logger.POS_ANSWER.contains(wantServer.toLowerCase()))) return;
                 MinecraftServerCreator server = new MinecraftServerCreator(name, version);
                 server.create();
             }
@@ -120,29 +112,5 @@ public class App {
             System.exit(-1);
             return null;
         }
-    }
-
-    public static String ask(String question) {
-        return ask(question, false);
-    }
-
-    public static String ask(String question, boolean canBeEmpty) {
-        System.out.print(question + "\n-> ");
-        String input = "";
-        
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            if (!(canBeEmpty)) {
-                if (line.isEmpty() || line.isBlank()) {
-                    System.out.print("->");
-                    continue;
-                }
-            }
-
-            input = line;
-            break;
-        }
-
-        return input.equals("") ? null : input;
     }
 }
