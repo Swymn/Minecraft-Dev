@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-import fr.swynn.handler.MavenHandler;
-import fr.swynn.handler.ServerHandler;
-import fr.swynn.handler.SpigotHandler;
-import fr.swynn.manager.DirectoryManager;
+import fr.swynn.creators.MavenProjectCreator;
+import fr.swynn.creators.MinecraftServerCreator;
+import fr.swynn.utils.SpigotDownloader;
+import fr.swynn.creators.DirectoryCreator;
 
 enum Type {
     PLUGIN,
@@ -79,14 +79,14 @@ public class App {
             System.exit(-1);
         }
 
-        SpigotHandler.createJSONIfNotExists();
+        SpigotDownloader.createJSONIfNotExists();
         scanner = new Scanner(System.in);
 
         Type type = getType(args[1]);
         String version = args[0];
         String name = args.length > 2 ? args[2] : names[new Random().nextInt(names.length)];
 
-        if (DirectoryManager.exists(name)) {
+        if (DirectoryCreator.exists(name)) {
             System.out.println("The project '" + name + "' already exists.");
             System.exit(-1);
         }
@@ -98,11 +98,11 @@ public class App {
         switch (type) {
             case PLUGIN -> {
                 String groupId = ask("Enter the groupId of your plugin (ex: com.example):");
-                new MavenHandler(version, name, groupId);
+                new MavenProjectCreator(version, name, groupId);
 
                 String wantServer = ask("Do you want to download the server too? (y/n)");
                 if (!(posAnswer.contains(wantServer.toLowerCase()))) return;
-                ServerHandler server = new ServerHandler(name, version);
+                MinecraftServerCreator server = new MinecraftServerCreator(name, version);
                 server.create();
             }
             case SERVER -> System.out.println("Type not implemented yet.");

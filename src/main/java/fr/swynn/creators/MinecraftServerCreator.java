@@ -1,6 +1,6 @@
-package fr.swynn.handler;
+package fr.swynn.creators;
 
-import fr.swynn.manager.FileManager;
+import fr.swynn.utils.SpigotDownloader;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,28 +8,23 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ServerHandler {
+public class MinecraftServerCreator {
 
     private final String version;
     private final Path path;
 
-    public ServerHandler(String name, String version) {
+    public MinecraftServerCreator(String name, String version) {
         this(name, version, "server");
     }
 
-    public ServerHandler(String name, String version, String path) {
+    public MinecraftServerCreator(String name, String version, String path) {
         this(name, version, Paths.get(path == null ? "" : path));
     }
 
-    public ServerHandler(String name, String version, Path path) {
+    public MinecraftServerCreator(String name, String version, Path path) {
         this.version = version;
         this.path = Paths.get(name).resolve(path);
     }
-
-    // Create the server folder
-    // Download spigot
-    // Create the EULA.txt files with the write content
-    // maybe start the server once ?
 
     /**
      * This method create the server folder, download the spigot version and create the EULA.txt file
@@ -58,7 +53,7 @@ public class ServerHandler {
      * Download the spigot version
      */
     private void downloadSpigot() {
-        new SpigotHandler(version, "./" + path.toString());
+        new SpigotDownloader(version, "./" + path.toString());
     }
 
     /**
@@ -73,7 +68,7 @@ public class ServerHandler {
                 "#" + formattedDate + "\n" +
                 "eula=true"
         ;
-        FileManager eula = new FileManager("eula.txt", Paths.get("./").resolve(path));
+        FileCreator eula = new FileCreator("eula.txt", Paths.get("./").resolve(path));
         eula.write(eulaContent);
     }
 
@@ -82,13 +77,13 @@ public class ServerHandler {
      */
     private void createStartScript() {
         String shellLine = "#!/bin/sh";
-        String javaFile = SpigotHandler.getName(version);
+        String javaFile = SpigotDownloader.getName(version);
 
         String startScriptContent =
                 shellLine + "\n" +
                 "java -Xms1G -Xmx2G -jar " + javaFile + "\n"
         ;
-        FileManager startScript = new FileManager("start.sh", Paths.get("./").resolve(path));
+        FileCreator startScript = new FileCreator("start.sh", Paths.get("./").resolve(path));
         startScript.write(startScriptContent);
     }
 }

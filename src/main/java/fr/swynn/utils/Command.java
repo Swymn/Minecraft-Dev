@@ -1,7 +1,6 @@
 package fr.swynn.utils;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 enum Status {
     SUCCESS(0),
@@ -14,7 +13,6 @@ enum Status {
 public class Command {
     
     private Status status;
-    private InputStream result;
 
     /**
      * Execute a command and wait for its end
@@ -26,7 +24,6 @@ public class Command {
             Process process = Runtime.getRuntime().exec(command);
             process.waitFor();
             this.status = process.exitValue() == 0 ? Status.SUCCESS : Status.ERROR;
-            this.result = process.getInputStream();
         } catch (IOException e) {
             System.out.println("Error while executing the command: " + command);
             this.status = Status.ERROR;
@@ -43,23 +40,5 @@ public class Command {
      */
     public boolean isSuccessful() {
         return status == Status.SUCCESS;
-    }
-
-    /**
-     * Get the result of the command
-     * 
-     * @return The result of the command - InputStream
-     */
-    public InputStream getResult() {
-        return result;
-    }
-
-    /**
-     * Get the status of the command
-     * 
-     * @return The status of the command - Status
-     */
-    public Status getStatus() {
-        return status;
     }
 }

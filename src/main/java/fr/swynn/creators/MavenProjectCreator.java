@@ -1,4 +1,4 @@
-package fr.swynn.handler;
+package fr.swynn.creators;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,15 +7,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-import fr.swynn.manager.DirectoryManager;
-import fr.swynn.manager.FileManager;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 
-public class MavenHandler {
+public class MavenProjectCreator {
 
-    public MavenHandler(String version, String name, String groupId) {
+    public MavenProjectCreator(String version, String name, String groupId) {
         Model model = this.setupPomXML(groupId, name, version);
         MavenXpp3Writer writer = new MavenXpp3Writer();
 
@@ -78,7 +76,7 @@ public class MavenHandler {
 
         for (Path path : folders) {
             try {
-                new DirectoryManager(Paths.get("./").resolve(path));
+                DirectoryCreator.create(Paths.get("./").resolve(path));
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
@@ -125,10 +123,10 @@ public class MavenHandler {
         ;
 
         try {
-            FileManager file = new FileManager("Main.java", folders[0]);
+            FileCreator file = new FileCreator("Main.java", folders[0]);
             file.write(mainJava);
 
-            file = new FileManager("plugin.yml", folders[1]);
+            file = new FileCreator("plugin.yml", folders[1]);
             file.write(yaml);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());

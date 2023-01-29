@@ -1,4 +1,4 @@
-package fr.swynn.handler;
+package fr.swynn.utils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -11,9 +11,7 @@ import java.util.HashMap;
 
 import com.google.gson.Gson;
 
-import fr.swynn.utils.Command;
-
-public class SpigotHandler {
+public class SpigotDownloader {
 
     private static final File FILE = new File("data/versions.json");
     private static final ArrayList<String> versions = new ArrayList<>() {{
@@ -91,7 +89,7 @@ public class SpigotHandler {
      * @param version The version to download - String
      * @param path    The path to storage the server - String
      */
-    public SpigotHandler(String version, String path) {
+    public SpigotDownloader(String version, String path) {
         this(version, Paths.get(path));
     }
 
@@ -101,8 +99,7 @@ public class SpigotHandler {
      * @param version The version to download - String
      * @param path    The path to storage the server - Path
      */
-    public SpigotHandler(String version, Path path) {
-        // TODO: The Spigot file isn't working.
+    public SpigotDownloader(String version, Path path) {
         this.version = version;
         String url = getURL(version);
         String PREFIX = "[INFO] : ";
@@ -115,6 +112,12 @@ public class SpigotHandler {
         System.out.println(PREFIX + "Configuration du server Spigot" + (mv.isSuccessful() ? " réussi" : " échoué"));
     }
 
+    /**
+     * This function is used to download the spigot server file.
+     * It will download the file in the current directory.
+     *
+     * @param url - The URL of the file to download - String
+     */
     private void download(String url) {
         try (FileOutputStream fos = new FileOutputStream(getBukkitName(version))) {
             URL website = new URL(url);

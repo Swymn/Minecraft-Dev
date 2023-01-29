@@ -1,4 +1,4 @@
-package fr.swynn.manager;
+package fr.swynn.creators;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,16 +8,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FileManager {
+public class FileCreator {
 
     private final String FILENAME;
     private final File FILE;
 
-    public FileManager(String filename, String path) {
+    public FileCreator(String filename, String path) {
         this(filename, Paths.get(path == null ? "" : path));
     }
 
-    public FileManager(String filename, Path path) throws IllegalArgumentException {
+    public FileCreator(String filename, Path path) throws IllegalArgumentException {
         if (Files.exists(path.resolve(filename)))
             throw new IllegalArgumentException("The file " + filename + " already exists");
 

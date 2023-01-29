@@ -1,4 +1,4 @@
-package fr.swynn.manager;
+package fr.swynn.creators;
 
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
@@ -6,21 +6,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class DirectoryManager {
+public class DirectoryCreator {
 
-    public DirectoryManager(String path) {
-        this("", Paths.get(path == null ? "" : path));
+
+    public static void create(String path) {
+        create("", Paths.get(path == null ? "" : path));
     }
 
-    public DirectoryManager(Path path) {
-        this("", path);
+    public static void create(Path path) {
+        create("", path);
     }
 
-    public DirectoryManager(String name, String path) {
-        this(name, Paths.get(path == null ? "" : path));
+    public static void create(String name, String path) {
+        create(name, Paths.get(path == null ? "" : path));
     }
 
-    public DirectoryManager(String name, Path path) throws IllegalArgumentException {
+    public static void create(String name, Path path) throws IllegalArgumentException {
 
         if (path.toString().isEmpty() || path.toString().isBlank() || path.toString().equals(".") || path.toString().equals("./"))
             throw new IllegalArgumentException("The path is empty");
