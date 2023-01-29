@@ -27,7 +27,6 @@ public class Command {
             process.waitFor();
             this.status = process.exitValue() == 0 ? Status.SUCCESS : Status.ERROR;
         } catch (IOException e) {
-            e.printStackTrace();
             Logger.log(State.ERROR,"Error while executing the command: " + command);
             this.status = Status.ERROR;
         } catch (InterruptedException e) {
