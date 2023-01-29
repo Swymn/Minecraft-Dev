@@ -137,4 +137,8 @@ public class App {
             return null;
         }
     }
+
+    public static boolean isWindowsOS() {
+        return System.getProperty("os.name").toLowerCase().contains("windows");
+    }
 }

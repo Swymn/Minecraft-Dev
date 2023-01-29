@@ -25,10 +25,10 @@ public class Command {
             process.waitFor();
             this.status = process.exitValue() == 0 ? Status.SUCCESS : Status.ERROR;
         } catch (IOException e) {
-            System.out.println("Error while executing the command: " + command);
+            Logger.log(State.ERROR,"Error while executing the command: " + command);
             this.status = Status.ERROR;
         } catch (InterruptedException e) {
-            System.out.println("The command was interrupted: " + command);
+            Logger.log(State.ERROR,"The command was interrupted: " + command);
             this.status = Status.INTERRUPTED;
         }
     }

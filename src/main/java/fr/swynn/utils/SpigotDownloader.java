@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
+import fr.swynn.App;
 
 public class SpigotDownloader {
 
@@ -106,8 +107,13 @@ public class SpigotDownloader {
         Logger.log(State.INFO, "Download of the Spigot server " + version + "...");
         download(url);
         Logger.log(State.SUCCESS, "Download of the Spigot server " + version + " successful.");
+        Command mv;
+        if (App.isWindowsOS()) {
+            mv = new Command("mv .\\" + getBukkitName(version) + " .\\" + path.normalize());
+        } else {
+           mv = new Command("mv " + getBukkitName(version) + " " + path);
 
-        Command mv = new Command("mv " + getBukkitName(version) + " " + path);
+        }
         Logger.log((mv.isSuccessful() ? State.SUCCESS : State.ERROR), "Configuration of the Spigot server " + (mv.isSuccessful() ? "successful" : "failed") + ".");
     }
 

@@ -1,5 +1,6 @@
 package fr.swynn.creators;
 
+import fr.swynn.App;
 import fr.swynn.utils.Logger;
 import fr.swynn.utils.SpigotDownloader;
 import fr.swynn.utils.State;
@@ -93,7 +94,7 @@ public class MinecraftServerCreator {
                 "java -Xms1G -Xmx2G -jar " + javaFile + "\n"
         ;
 
-        String fileName = System.getProperty("os.name").toLowerCase().contains("windows") ? "start.bat" : "start.sh";
+        String fileName = App.isWindowsOS() ? "start.bat" : "start.sh";
         FileCreator startScript = new FileCreator(fileName, Paths.get("./").resolve(path));
         startScript.write(startScriptContent);
     }
