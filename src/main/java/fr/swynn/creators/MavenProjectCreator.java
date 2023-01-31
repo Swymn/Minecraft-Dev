@@ -48,7 +48,11 @@ public class MavenProjectCreator {
         properties.setProperty("maven.compiler.target", "17");
         model.setProperties(properties);
 
-        // TODO: The version of spigot doesn't work.
+        Repository repository = new Repository();
+        repository.setId("spigot-repo");
+        repository.setUrl("https://hub.spigotmc.org/nexus/content/repositories/snapshots/");
+        model.addRepository(repository);
+
         Dependency dependency = new Dependency();
         dependency.setGroupId("org.spigotmc");
         dependency.setArtifactId("spigot-api");
