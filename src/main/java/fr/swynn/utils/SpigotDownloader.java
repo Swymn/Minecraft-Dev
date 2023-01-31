@@ -104,9 +104,9 @@ public class SpigotDownloader {
         this.version = version;
         String url = getURL(version);
 
-        Logger.log(State.INFO, "Download of the Spigot server " + version + "...");
+        Logger.log(State.INFO, "Download of the " + getName(version) + " server...");
         download(url);
-        Logger.log(State.SUCCESS, "Download of the Spigot server " + getName(version) + " successful.");
+        Logger.log(State.SUCCESS, "Download of the " + getName(version) + " server successful.");
 
         Command mv = new Command((App.isWindowsOS() ? "move " : "mv ") + getName(version) + " " + path.normalize());
         Logger.log((mv.isSuccessful() ? State.SUCCESS : State.ERROR), "Configuration of the Spigot server " + (mv.isSuccessful() ? "successful" : "failed") + ".");
