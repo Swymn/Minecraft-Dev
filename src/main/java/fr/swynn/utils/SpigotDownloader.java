@@ -104,11 +104,11 @@ public class SpigotDownloader {
         this.version = version;
         String url = getURL(version);
 
-        Logger.log(State.INFO, "Download of the Spigot server " + version + "...");
+        Logger.log(State.INFO, "Download of the " + getName(version) + " server...");
         download(url);
-        Logger.log(State.SUCCESS, "Download of the Spigot server " + getBukkitName(version) + " successful.");
+        Logger.log(State.SUCCESS, "Download of the " + getName(version) + " server successful.");
 
-        Command mv = new Command((App.isWindowsOS() ? "move " : "mv ") + getBukkitName(version) + " " + path.normalize());
+        Command mv = new Command((App.isWindowsOS() ? "move " : "mv ") + getName(version) + " " + path.normalize());
         Logger.log((mv.isSuccessful() ? State.SUCCESS : State.ERROR), "Configuration of the Spigot server " + (mv.isSuccessful() ? "successful" : "failed") + ".");
     }
 
@@ -119,7 +119,7 @@ public class SpigotDownloader {
      * @param url - The URL of the file to download - String
      */
     private void download(String url) {
-        try (FileOutputStream fos = new FileOutputStream(getBukkitName(version))) {
+        try (FileOutputStream fos = new FileOutputStream(getName(version))) {
             URL website = new URL(url);
             InputStream in = website.openStream();
             byte[] buffer = new byte[4096];

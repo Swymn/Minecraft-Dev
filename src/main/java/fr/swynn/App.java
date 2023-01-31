@@ -102,25 +102,25 @@ public class App {
                     server.create();
 
                     Logger.log(State.SUCCESS, "Server created in " + server.getPath() + " folder.");
-                    Logger.log(State.INFO, "You can now go to the server folder using the commande 'cd " + server.getPath() + "', or juste by using your file explorer tool.");
-                    Logger.log(State.INFO, "Don't forget to use the good version of Java, to run your server.");
-                    Logger.log(State.INFO, "You can now launch your server by typing the commande 'sh start.sh' (for Linux & MacOS users)\n or 'start.bat' (for Windows users).");
+                    Logger.log(State.INFO, "You can now go to the server folder using the command 'cd " + server.getPath() + "', or just by using your file explorer tool.");
+                    Logger.log(State.INFO, "Make sure to use the latest version of Java to run your server.");
+                    Logger.log(State.INFO, "You can now launch your server by typing the command 'sh start.sh' (for Linux and MacOS users),\nor 'start.bat' (for Windows users).");
                 }
 
                 Logger.log(State.SUCCESS, "Project created in " + name + " folder.");
-                Logger.log(State.INFO, "You can now go to the project folder using the commande 'cd " + name + "', or juste by using your file explorer tool.");
-                Logger.log(State.INFO, "Don't forget to use the good version of Java, by default, the project is configured to use Java 17. \n(you can change it in the pom.xml file, in the properties section, change both maven.compiler.source and maven.compiler.target with the version you want).");
-                Logger.log(State.INFO, "If there is a problem with the specified version of spigot inside the pom.xml file, you can change it by changing the version in the dependency section \n(see https://hub.spigotmc.org/nexus/content/repositories/snapshots/org/spigotmc/spigot-api/ to see all the spigot versions available).");
-                Logger.log(State.INFO, "You can now run 'mvn clean install' to build your plugin and the server. \n(you need to have maven installed on your computer.");
-                Logger.log(State.INFO, "You can also run 'mvn clean install -DskipTests' to build your plugin and the server without running the tests. \n(you need to have maven installed on your computer).");
+                Logger.log(State.INFO, "You can now access the project folder by using the command 'cd " + name + "', or simply by using your file explorer tool.");
+                Logger.log(State.INFO, "Remember to utilize the latest version of Java. By default, the project is set to use Java 17,\n(but you can alter it in the properties section of the pom.xml file by changing both the maven.compiler.source and maven.compiler.target values to the desired version).");
+                Logger.log(State.INFO, "If there is an issue with the specified version of Spigot in the pom.xml file, you can resolve it by altering the version in the dependency section. \n(Refer to https://hub.spigotmc.org/nexus/content/repositories/snapshots/org/spigotmc/spigot-api/ for a list of all available Spigot versions).");
+                Logger.log(State.INFO, "You can now run 'mvn clean install' to build your plugin and the server, provided that you have Maven installed on your computer.");
+                Logger.log(State.INFO, "You can build your plugin and the server without running the tests by running 'mvn clean install -DskipTests' (assuming that you have maven installed on your computer).");
             }
             case SERVER -> {
                 MinecraftServerCreator server = new MinecraftServerCreator(name, version);
                 server.create();
                 Logger.log(State.SUCCESS, "Server created in " + server.getPath() + " folder.");
-                Logger.log(State.INFO, "You can now go to the server folder using the commande 'cd " + server.getPath() + "', or juste by using your file explorer tool.");
-                Logger.log(State.INFO, "Don't forget to use the good version of Java, to run your server.");
-                Logger.log(State.INFO, "You can now launch your server by typing the commande 'sh start.sh' (for Linux & MacOS users)\n or 'start.bat' (for Windows users).");
+                Logger.log(State.INFO, "You can now go to the server folder using the command 'cd " + server.getPath() + "', or just by using your file explorer tool.");
+                Logger.log(State.INFO, "Make sure to use the latest version of Java to run your server.");
+                Logger.log(State.INFO, "You can now launch your server by typing the command 'sh start.sh' (for Linux and MacOS users)\n, or 'start.bat' (for Windows users.)");
             }
             default -> Logger.log(State.ERROR, "Type must be 'plugin' or 'server', not '" + type + "'");
         }
