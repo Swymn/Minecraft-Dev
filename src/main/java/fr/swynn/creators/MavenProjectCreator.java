@@ -44,6 +44,7 @@ public class MavenProjectCreator {
         model.setVersion("1.0");
 
         Properties properties = new Properties();
+        properties.setProperty("project.build.sourceEncoding", "UTF-8");
         properties.setProperty("maven.compiler.source", "17");
         properties.setProperty("maven.compiler.target", "17");
         model.setProperties(properties);
