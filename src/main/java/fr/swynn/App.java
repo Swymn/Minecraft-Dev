@@ -80,7 +80,7 @@ public class App {
         String version = args[0];
         String name = args.length > 2 ? args[2] : names[new Random().nextInt(names.length)];
 
-        name = name.replace(" ", "-").toLowerCase();
+        name = name.replace(" ", "-").replaceAll("/", "_").toLowerCase();
 
         if (DirectoryCreator.exists(name)) {
             Logger.log(State.ERROR,"The project '" + name + "' already exists.");

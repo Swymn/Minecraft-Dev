@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- The name now can not contain spaces and slashes.
+
+## [0.2.2]
+
 ### Fixed
 
 - Fixed the generated pom.xml file, sourceEncoding and repository was missing.
